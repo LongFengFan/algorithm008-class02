@@ -6,8 +6,6 @@
 
 常用的7种时间复杂度：
 
-如何分析一段代码的时间复杂度：
-
 > O(1): Constant Complexity 常数复杂度
 >
 > O(log n): Logarithmic Complexity 对数复杂度
@@ -21,6 +19,8 @@
 > O(2^n): Exponential Growth 指数
 >
 > O(n!): Factorial 阶乘
+
+如何分析一段代码的时间复杂度：
 
 极客时间训练营和王争老师的专栏这部分类似
 
