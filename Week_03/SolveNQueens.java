@@ -34,30 +34,44 @@ package Week_03;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 public class SolveNQueens {
     //    index
-    private Set<Integer> col = new HashSet<>();
+    private List<Integer> col = new ArrayList<>();
 
     //    行 + 列
-    private Set<Integer> pie = new HashSet<>();
+    private  List<Integer> pie = new ArrayList<>();
     //    行 - 列
-    private Set<Integer> na = new HashSet<>();
+    private  List<Integer> na = new ArrayList<>();
+    List<List<String>> lists  = new ArrayList<>();
 
+//    回溯方法，
+// 回溯框架讲解：https://leetcode-cn.com/problems/n-queens/solution/hui-su-suan-fa-xiang-jie-by-labuladong/
+//    可以配合老师的递归模板理解
     public List<List<String>> solveNQueens(int n) {
-        List<List<String>> lists = new ArrayList<>();
-        List<String> list = new ArrayList<>();
-        helper(0, n, list, lists);
+        char[][] board = new char[n][n];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board.length; j++) {
+                board[i][j] = '.';
+            }
+        }
+
+        helper(0, n, board);
+//        helper2(0, n, board);
         return lists;
     }
 
-    private void helper(int level, int n, List<String> list, List<List<String>> lists) {
+    private void helper(int level, int n, char[][] board) {
         if (level == n) {
-            lists.add(new ArrayList<>(list));
+            lists.add(generateListFromBoard(board));
             return;
         }
+//        检查方法1，需要配合三个缓存列，撇，捺，检查规则是，主对角线（由左上至右下的对角线）行 - 列为常数
+//        次对角线(右上至左下的对角线) 行 + 列为常数
         for (int i = 0; i < n; i++) {
             if (col.contains(i) || pie.contains(level + i) || na.contains(level - i)) {
 //                停止 go die
@@ -67,28 +81,71 @@ public class SolveNQueens {
             col.add(i);
             pie.add(level + i);
             na.add(level - i);
-            list.add(generateString(i, n));
+            board[level][i] = 'Q';
 
 //            recurse
-            helper(level + 1, n, list, lists);
-//            reverse state
+            helper(level + 1, n, board);
+//            reverse state 回溯
             col.remove(col.size() - 1);
             pie.remove(pie.size() - 1);
             na.remove(na.size() - 1);
-//            list.remove(list.size() - 1);
+            board[level][i] = '.';
         }
     }
 
-    private String generateString(int i, int n) {
-        StringBuilder sb = new StringBuilder();
-        for (int j = 0; j < n; j++) {
-            if (j == i) {
-                sb.append("Q");
-            } else {
-                sb.append(".");
-            }
+    private void helper2(int level, int n, char[][] board) {
+        if (level == n) {
+            lists.add(generateListFromBoard(board));
+            return;
         }
-        return sb.toString();
+        for (int i = 0; i < n; i++) {
+//            检查方法2
+//            直接硬检,实际测试比引入缓存的时间复杂度更好。
+            if (!isValid(board, level, i)){
+                continue;
+            }
+//            process
+            board[level][i] = 'Q';
+
+//            recurse
+            helper(level + 1, n, board);
+//            reverse state 回溯
+            board[level][i] = '.';
+        }
+    }
+
+    private boolean isValid(char[][] board, int row, int col) {
+        int n = board.length;
+        // 检查列是否有皇后互相冲突
+        for (int i = 0; i < n; i++) {
+            if (board[i][col] == 'Q')
+                return false;
+        }
+        // 检查右上方是否有皇后互相冲突
+        for (int i = row - 1, j = col + 1;
+             i >= 0 && j < n; i--, j++) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+        // 检查左上方是否有皇后互相冲突
+        for (int i = row - 1, j = col - 1;
+             i >= 0 && j >= 0; i--, j--) {
+            if (board[i][j] == 'Q')
+                return false;
+        }
+        return true;
+    }
+
+    private List<String> generateListFromBoard(char[][] board) {
+        List<String> list = new ArrayList<>();
+        for (char[] chars : board) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < board.length; j++) {
+                sb.append(chars[j]);
+            }
+            list.add(sb.toString());
+        }
+        return list;
     }
 
     public static void main(String[] args) {
