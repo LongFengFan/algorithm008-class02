@@ -26,12 +26,40 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Combine {
+
+    int k,n;
+
+    public List<List<Integer>> combine2(int n, int k) {
+        this.k = k;
+        this.n = n;
+        List<Integer> box = IntStream.range(1, n + 1).boxed().collect(Collectors.toList());
+        List<List<Integer>> lists = new LinkedList<>();
+        LinkedList<Integer> list = new LinkedList<>();
+        recurse(lists, list, 1);
+        return lists;
+    }
+
+    private void recurse(List<List<Integer>> lists, LinkedList<Integer> list,int first) {
+        if(list.size() == k){
+            lists.add(new LinkedList<>(list));
+            return;
+        }
+        for (int i = first; i <= n; i++) {
+            list.addLast(i);
+            recurse(lists,list,i + 1);
+            //        reverse
+            list.removeLast();
+        }
+    }
+
+
     public List<List<Integer>> combine(int n, int k) {
         HashSet<List<Integer>> sets = new HashSet<>();
         List<Integer> box = IntStream.range(1, n + 1).boxed().collect(Collectors.toList());
         helper(sets, box, k, new ArrayList<>(k));
         return new ArrayList<>(sets);
     }
+
 
     private void helper(HashSet<List<Integer>> sets, List<Integer> box, int k, List<Integer> list) {
 //        terminator
@@ -43,7 +71,6 @@ public class Combine {
         }
         for (Integer i : box) {
 //            process
-            j = i;
             list.add(i);
             List<Integer> newBox = new LinkedList<>(box);
             newBox.remove(i);
@@ -59,4 +86,6 @@ public class Combine {
         List<List<Integer>> combine = new Combine().combine(11, 10);
         System.out.println(combine);
     }
+
+
 }
