@@ -18,6 +18,14 @@
 
 # 二分查找
 
+## 条件
+
+- 单调
+- 具有边界
+- 具有index 
+
+当符合这三个条件的时候可以考虑使用二分查找
+
 ## 模板
 
 ```java
@@ -39,4 +47,27 @@ private int find(int target,int[] nums){
 }
 ```
 
-- 最常见的是
+
+
+# 二分法查找旋转数组旋转点
+
+```java
+private int getBreakPoint(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        if (nums[left] <= nums[right]) return 0;
+        int mid = 0;
+        while (left < right) {
+            mid = left + (right - left) / 2;
+            //利用右边部分，如果中点值小于右边界，属于升序段，不需要再判断
+            if (nums[mid] < nums[right]) {
+                right = mid;
+            }else {
+                //中点值大于等于右边界，旋转点肯定在右边。
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+```
+
