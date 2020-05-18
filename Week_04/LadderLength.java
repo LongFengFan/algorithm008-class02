@@ -40,9 +40,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class LadderLength {
-//    深度优先，超时
+    //    深度优先，超时
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        if(!wordList.contains(endWord)){
+        if (!wordList.contains(endWord)) {
             return 0;
         }
         int[] least = {0};
@@ -64,10 +64,12 @@ public class LadderLength {
     }
 
     boolean compareTwoS(String s1, String s2) {
+        if (s1.length() != s2.length()) return false;
         int count = 0;
         for (int i = 0; i < s1.length(); i++) {
             if (s1.charAt(i) != s2.charAt(i)) {
                 count++;
+                if (count > 1) return false;
             }
         }
         return count == 1;
@@ -86,22 +88,77 @@ public class LadderLength {
         System.out.println(i);
     }
 
-//    广度优先
-public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
-    if(!wordList.contains(endWord)){
-        return 0;
-    }
-    HashSet<String> visited = new HashSet<>();
-    LinkedList<String> queue = new LinkedList<>();
-    queue.offer(beginWord);
-    visited.add(beginWord);
-    while (!queue.isEmpty()){
-        String poll = queue.poll();
-        for (String s : wordList) {
-            if(visited.contains(s)) continue;
-            if(!compareTwoS(beginWord,s)) continue;
+    //    广度优先
+    public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
+        if (!wordList.contains(endWord)) {
+            return 0;
+        }
+        HashSet<String> visited = new HashSet<>();
+        LinkedList<String> queue = new LinkedList<>();
+//        初始化第一层
+        queue.addLast(beginWord);
+//        初始化visited
+        visited.add(beginWord);
+        int count = 1;
+        while (!queue.isEmpty()) {
+//            进入一层count++
+            count++;
+//            不能再for循环中直接使用i < queue.size，因为queue的size在不断变化
+            int size = queue.size();
+//            针对该层遍历
+            for (int i = 0; i < size; i++) {
+                String poll = queue.poll();
+                for (String s : wordList) {
+                    if (visited.contains(s)) continue;
+                    if (!compareTwoS(poll, s)) continue;
+                    if (s.equals(endWord)) {
+                        return count;
+                    }
+                    visited.add(s);
+                    queue.addLast(s);
+                }
+            }
 
         }
+        return 0;
     }
-}
+
+    //    优化广度优先的visited标记
+    public int ladderLength3(String beginWord, String endWord, List<String> wordList) {
+        if (!wordList.contains(endWord)) {
+            return 0;
+        }
+        boolean[] visited = new boolean[wordList.size()];
+        LinkedList<String> queue = new LinkedList<>();
+//        初始化第一层
+        queue.addLast(beginWord);
+//        初始化visited
+        int idx = wordList.indexOf(beginWord);
+        if (idx != -1) {
+            visited[idx] = true;
+        }
+        int count = 1;
+        while (!queue.isEmpty()) {
+//            进入一层count++
+            count++;
+//            不能再for循环中直接使用i < queue.size，因为queue的size在不断变化
+            int size = queue.size();
+//            针对该层遍历
+            for (int i = 0; i < size; i++) {
+                String poll = queue.poll();
+                for (int j = 0; j < wordList.size(); j++) {
+                    String s = wordList.get(j);
+                    if (visited[j]) continue;
+                    if (!compareTwoS(poll, s)) continue;
+                    if (s.equals(endWord)) {
+                        return count;
+                    }
+                    visited[j] = true;
+                    queue.addLast(s);
+                }
+            }
+
+        }
+        return 0;
+    }
 }
