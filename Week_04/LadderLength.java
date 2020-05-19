@@ -161,4 +161,110 @@ public class LadderLength {
         }
         return 0;
     }
+
+    //双向BFS
+    public int ladderLength4(String beginWord, String endWord, List<String> wordList) {
+        int endWordIndex = wordList.indexOf(endWord);
+        if (endWordIndex == -1) return 0;
+        wordList.add(beginWord);
+        //从begin_word搜索
+        boolean[] visited1 = new boolean[wordList.size()];
+        LinkedList<String> queue1 = new LinkedList<>();
+        queue1.addLast(beginWord);
+        visited1[wordList.size() - 1] = true;
+//    从end_word搜索
+        boolean[] visited2 = new boolean[wordList.size()];
+        LinkedList<String> queue2 = new LinkedList<>();
+        queue2.addLast(endWord);
+        visited2[endWordIndex] = true;
+        int depth1 = 0;
+        int depth2 = 0;
+        while (!queue1.isEmpty() && !queue2.isEmpty()) {
+//            进入一层count++
+            depth1++;
+            int size1 = queue1.size();
+//            针对该层遍历
+            for (int i = 0; i < size1; i++) {
+                String poll = queue1.poll();
+                for (int j = 0; j < wordList.size(); j++) {
+                    String s = wordList.get(j);
+                    if (visited1[j]) continue;
+                    if (!compareTwoS(poll, s)) continue;
+//                搜索碰头
+                    if (visited2[j]) {
+                        return depth1 + depth2 + 1;
+                    }
+                    visited1[j] = true;
+                    queue1.addLast(s);
+                }
+            }
+            depth2++;
+            int size2 = queue2.size();
+//            针对该层遍历
+            for (int i = 0; i < size2; i++) {
+                String poll = queue2.poll();
+                for (int j = 0; j < wordList.size(); j++) {
+                    String s = wordList.get(j);
+                    if (visited2[j]) continue;
+                    if (!compareTwoS(poll, s)) continue;
+//                搜索碰头
+                    if (visited1[j]) {
+                        return depth1 + depth2 + 1;
+                    }
+                    visited2[j] = true;
+                    queue2.addLast(s);
+                }
+            }
+        }
+        return 0;
+    }
+
+    //    接下来开始对双向BFS进行优化。
+//从AB两个方向的中，选择当前节点更少的队列，进行层序遍历。
+    public int ladderLength5(String beginWord, String endWord, List<String> wordList) {
+        int endWordIndex = wordList.indexOf(endWord);
+        if (endWordIndex == -1) return 0;
+        wordList.add(beginWord);
+        //从begin_word搜索
+        boolean[] visited1 = new boolean[wordList.size()];
+        LinkedList<String> queue1 = new LinkedList<>();
+        queue1.addLast(beginWord);
+        visited1[wordList.size() - 1] = true;
+//    从end_word搜索
+        boolean[] visited2 = new boolean[wordList.size()];
+        LinkedList<String> queue2 = new LinkedList<>();
+        queue2.addLast(endWord);
+        visited2[endWordIndex] = true;
+        int depth = 0;
+        while (!queue1.isEmpty() && !queue2.isEmpty()) {
+//            进入一层count++
+            depth++;
+            if (queue1.size() > queue2.size()) {
+                LinkedList<String> tmpQueue = queue1;
+                queue1 = queue2;
+                queue2 = tmpQueue;
+                boolean[] temVisited = visited1;
+                visited1 = visited2;
+                visited2 = temVisited;
+            }
+            int size1 = queue1.size();
+//            针对该层遍历
+            for (int i = 0; i < size1; i++) {
+                String poll = queue1.poll();
+                for (int j = 0; j < wordList.size(); j++) {
+                    String s = wordList.get(j);
+                    if (visited1[j]) continue;
+                    if (!compareTwoS(poll, s)) continue;
+//                搜索碰头
+                    if (visited2[j]) {
+                        return depth + 1;
+                    }
+                    visited1[j] = true;
+                    queue1.addLast(s);
+                }
+            }
+        }
+        return 0;
+
+    }
 }
