@@ -52,4 +52,31 @@ public class TwoSum {
         }
         return ints;
     }
+
+    //    五毒神掌 2
+//    两次hash
+    public int[] twoSum3(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            map.put(target - nums[i], i);
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i]) && map.get(nums[i]) != i) {
+                return new int[]{i, map.get(nums[i])};
+            }
+        }
+        return null;
+    }
+
+    //    一次hash 事实证明可以在一次遍历中完成
+    public int[] twoSum4(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>(nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            if (map.containsKey(nums[i]) && map.get(nums[i]) != i) {
+                return new int[]{i, map.get(nums[i])};
+            }
+            map.put(target - nums[i], i);
+        }
+        return null;
+    }
 }

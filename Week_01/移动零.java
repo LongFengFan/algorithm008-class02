@@ -54,6 +54,22 @@ class 移动零 {
             System.out.println(anInt);
         }
     }
+
+//    五毒神掌 2
+//    双指针
+    public void moveZeroes3(int[] nums){
+        int zeroIndex = -1 ;
+        boolean gotZero = false;
+        for (int i = 0; i < nums.length; i++) {
+            if(nums[i] == 0 && !gotZero){
+                zeroIndex = i;
+                gotZero = true;
+            }else if(nums[i] != 0 && gotZero){
+                nums[zeroIndex] = nums[i];
+                nums[i] = 0;
+                zeroIndex++;
+            }
+        }
+    }
 }
-//leetcode submit region end(Prohibit modification and deletion)
 
