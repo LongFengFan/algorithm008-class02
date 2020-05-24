@@ -45,17 +45,31 @@ package Week_01;
 
 public class 删除排序数组中的重复项 {
 
-//    利用了老师讲解移动零中的双指针法
+    //    利用了老师讲解移动零中的双指针法
     public int removeDuplicates(int[] nums) {
         if (nums.length < 2) {
             return nums.length;
         }
         int j = 1;
         for (int i = 1; i < nums.length; i++) {
-            if(nums[i] != nums[i - 1]){
-                if(i != j){
+            if (nums[i] != nums[i - 1]) {
+                if (i != j) {
                     nums[j] = nums[i];
                 }
+                j++;
+            }
+        }
+        return j;
+    }
+
+    //    五毒神掌 2
+//    [0,0,1,1,1,2,2,3,3,4]
+    public int removeDuplicates2(int[] nums) {
+        if(nums.length < 2) return nums.length;
+        int j = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[i - 1]) {
+                nums[j] = nums[i];
                 j++;
             }
         }

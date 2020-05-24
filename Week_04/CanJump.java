@@ -20,6 +20,9 @@
 //著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 package Week_04;
 
+import org.springframework.util.StopWatch;
+
+import java.util.ArrayList;
 
 public class CanJump {
     //    深度优先遍历
@@ -62,7 +65,7 @@ public class CanJump {
         return maxL >= nums.length - 1;
     }
 
-//    官方贪心
+    //    官方贪心
     public boolean canJump3(int[] nums) {
         int n = nums.length;
         int rightmost = 0;
@@ -76,5 +79,44 @@ public class CanJump {
             }
         }
         return false;
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        StopWatch stopWatch = new StopWatch();
+//        int[] array = {2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9, 2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9, 2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9, 2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9
+//                , 2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9, 2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9, 2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9, 2, 3, 1, 1, 4, 5, 3, 2, 2, 1, 4, 6, 9};
+//        CanJump canJump = new CanJump();
+//
+//        stopWatch.start("test canJump start...");
+//        System.out.println(canJump.canJump(array));
+//        stopWatch.stop();
+//
+//        stopWatch.start("test canJump2 start...");
+//        System.out.println(canJump.canJump2(array));
+//        stopWatch.stop();
+//
+//        stopWatch.start("test canJump3 start...");
+//        System.out.println(canJump.canJump3(array));
+//        stopWatch.stop();
+//
+//        System.out.println(stopWatch.prettyPrint());
+        Thread.sleep(3000);
+
+        stopWatch.start("1");
+        ArrayList<Integer> users = new ArrayList(100000);
+        for (int i = 0; i < 100000; ++i) {
+            users.add(i);
+        }
+        stopWatch.stop();
+        stopWatch.start("2");
+        ArrayList<Integer> users2 = new ArrayList();
+        for (int i = 0; i < 100000; ++i) {
+            users.add(i);
+        }
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
+
+
+
     }
 }
