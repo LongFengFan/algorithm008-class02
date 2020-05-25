@@ -22,16 +22,16 @@ public class Jump {
     public int jump2(int[] nums) {
         int i = 0;
         int count = 0;
-        while(i < nums.length - 1){
+        while (i < nums.length - 1) {
             count++;
             int maxJ = i + 1;
-            int countMaxValue = nums[maxJ];
+            int currentMaxValue = nums[maxJ];
             int currLength = i + nums[i];
-            if(currLength >= nums.length - 1) return count;
+            if (currLength >= nums.length - 1) return count;
             for (int j = 2; j <= nums[i]; j++) {
-                if(countMaxValue < nums[i + j] + j - 1){
+                if (currentMaxValue < nums[i + j] + j - 1) {
                     maxJ = i + j;
-                    countMaxValue = nums[i + j] + j - 1;
+                    currentMaxValue = nums[i + j] + j - 1;
                 }
             }
             i = maxJ;
@@ -41,6 +41,7 @@ public class Jump {
     }
 
     public static void main(String[] args) {
+        int[] an = new int[4];
         int[] nums = {2, 3, 1, 1, 4};
         int jump = new Jump().jump2(nums);
         System.out.println(jump);
