@@ -80,6 +80,40 @@ public class UniquePaths {
         return k1 + k2;
     }
 
+//   动态规划 动态递推
+//        递推公式
+//        f[i][0] = 1; f[0][j] = 1
+//        f[i][j] = f[i -1][j] + f[i][j - 1]
+    public int uniquePaths3(int m, int n) {
+        int[][] a = new int[m][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (i == 0 || j == 0) {
+                    a[j][i] = 1;
+                    continue;
+                }
+                a[j][i] = a[j - 1][i] + a[j][i - 1];
+            }
+        }
+        return a[m - 1][n - 1];
+    }
+
+    public int uniquePaths4(int m, int n) {
+//        可以再转化为一维数组，由最底层一层一层网上递推。
+        int[] a = new int[m];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (i == 0 || j == 0) {
+                    a[j] = 1;
+                    continue;
+                }
+                a[j] = a[j] + a[j - 1];
+            }
+        }
+        return a[m - 1];
+
+    }
+
     public static void main(String[] args) {
         int i = new UniquePaths().uniquePaths(3, 2);
         System.out.println(i);
