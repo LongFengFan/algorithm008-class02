@@ -42,8 +42,16 @@ public class UniquePathsWithObstacles {
                     obstacleGrid[i][j] = 0;
                     continue;
                 }
-                if (i == n - 1 || j == m - 1) {
+                if (i == n - 1 && j == m - 1) {
                     obstacleGrid[i][j] = 1;
+                    continue;
+                }
+                if (i == n - 1) {
+                    obstacleGrid[i][j] = obstacleGrid[i][j + 1];
+                    continue;
+                }
+                if (j == m - 1) {
+                    obstacleGrid[i][j] = obstacleGrid[i + 1][j];
                     continue;
                 }
                 obstacleGrid[i][j] = obstacleGrid[i + 1][j] + obstacleGrid[i][j + 1];
