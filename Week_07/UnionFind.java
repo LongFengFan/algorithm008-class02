@@ -30,6 +30,10 @@ public class UnionFind {
         count--;
     }
 
+    public int getCount() {
+        return count;
+    }
+
     public static void main(String[] args) {
         UnionFind unionFind = new UnionFind(10);
         System.out.println(unionFind.count);

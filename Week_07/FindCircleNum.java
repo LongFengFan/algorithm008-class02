@@ -34,9 +34,12 @@ public class FindCircleNum {
         UnionFind unionFind = new UnionFind(n);
 
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-
+            for (int j = i + 1; j < n; j++) {
+                if (M[i][j] == 1) {
+                    unionFind.union(i, j);
+                }
             }
         }
+        return unionFind.getCount();
     }
 }
