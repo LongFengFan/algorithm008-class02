@@ -83,27 +83,27 @@ public class MinDepth {
 //深度优先搜索方法的缺陷是所有节点都必须访问到，以保证能够找到最小深度。因此复杂度是 O(N) 。
 //    一个优化的方法是利用广度优先搜索，我们按照树的层去迭代，第一个访问到的叶子就是最小深度的节点，这样就不用遍历所有的节点了。
     public int minDepth4(TreeNode root) {
-        LinkedList<Pair<TreeNode, Integer>> stack = new LinkedList<>();
+        LinkedList<Pair<TreeNode, Integer>> queue = new LinkedList<>();
         if (root == null) {
             return 0;
         }
         else {
-            stack.add(new Pair<>(root, 1));
+            queue.add(new Pair<>(root, 1));
         }
 
         int current_depth = 0;
-        while (!stack.isEmpty()) {
-            Pair<TreeNode, Integer> current = stack.poll();
+        while (!queue.isEmpty()) {
+            Pair<TreeNode, Integer> current = queue.poll();
             root = current.getKey();
             current_depth = current.getValue();
             if ((root.left == null) && (root.right == null)) {
                 break;
             }
             if (root.left != null) {
-                stack.add(new Pair<>(root.left, current_depth + 1));
+                queue.add(new Pair<>(root.left, current_depth + 1));
             }
             if (root.right != null) {
-                stack.add(new Pair<>(root.right, current_depth + 1));
+                queue.add(new Pair<>(root.right, current_depth + 1));
             }
         }
         return current_depth;

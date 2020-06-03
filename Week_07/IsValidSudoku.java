@@ -53,6 +53,43 @@ package Week_07;
 public class IsValidSudoku {
 
     public boolean isValidSudoku(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') continue;
+                if (!rowCheck(board, i, j)) return false;
+                if (!colCheck(board, i, j)) return false;
+                if (!blockCheck(board, i, j)) return false;
+            }
+        }
+        return true;
+    }
 
+    private boolean rowCheck(char[][] board, int i, int j) {
+        for (int k = 0; k < board[i].length; k++) {
+            if (k == j) continue;
+            if (board[i][k] == board[i][j]) return false;
+        }
+        return true;
+    }
+
+    private boolean colCheck(char[][] board, int i, int j) {
+        for (int k = 0; k < board.length; k++) {
+            if (k == i) continue;
+            if (board[k][j] == board[i][j]) return false;
+        }
+        return true;
+    }
+
+    private boolean blockCheck(char[][] board, int i, int j) {
+        char origin = board[i][j];
+        int bx = i / 3 * 3;
+        int by = j / 3 * 3;
+        for (int m = bx; m < bx + 3; m++) {
+            for (int n = by; n < by + 3; n++) {
+                if(m == i && n == j) continue;
+                if (board[m][n] == origin) return false;
+            }
+        }
+        return true;
     }
 }
