@@ -39,7 +39,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class MaxSlidingWindow {
-    // 仿照官方题解双端队列，主要的点是在队列中如和最快找到最大值，在这儿我们队列中存的是索引
+    // 仿照官方题解双端队列，主要的点是在队列中如何最快找到最大值，在这儿我们队列中存的是索引
     // 也可以存值，不过代码有少许不一样，且存索引更容易判断
     public int[] maxSlidingWindow(int[] nums, int k) {
 //        也可以用其他双端队列如：ArrayDqueue
@@ -68,6 +68,7 @@ public class MaxSlidingWindow {
 //            第4步
             // 将当前窗口的最大值（即队列头部值的索引在数组中的值）赋给kArr
             // 将当前窗口的最大值索引（即队列头部值）更新maxIndex
+//            i >= k - 1  i是从k -1 处索引开始
             if (i >= k - 1) {
                 kArr[idx++] = nums[dequeue.getFirst()];
                 maxIndex = dequeue.getFirst();
