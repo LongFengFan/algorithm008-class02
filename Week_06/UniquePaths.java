@@ -32,6 +32,8 @@
 //题目数据保证答案小于等于 2 * 10 ^ 9
 package Week_06;
 
+import java.util.Arrays;
+
 public class UniquePaths {
     //    1. 傻递归 超时
     public int uniquePaths(int m, int n) {
@@ -80,7 +82,7 @@ public class UniquePaths {
         return k1 + k2;
     }
 
-//   动态规划 动态递推
+    //   动态规划 动态递推
 //        递推公式
 //        f[i][0] = 1; f[0][j] = 1
 //        f[i][j] = f[i -1][j] + f[i][j - 1]
@@ -98,19 +100,43 @@ public class UniquePaths {
         return a[m - 1][n - 1];
     }
 
-    public int uniquePaths4(int m, int n) {
-//        可以再转化为一维数组，由最底层一层一层网上递推。
-        int[] a = new int[m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (i == 0 || j == 0) {
-                    a[j] = 1;
-                    continue;
-                }
-                a[j] = a[j] + a[j - 1];
+    //    增加一列一行减少分治判断
+    public int uniquePath3_2(int m, int n) {
+        int[][] dp = new int[m + 1][n + 1];
+        m = m + 1;
+        n = n + 1;
+        dp[0][1] = 1; // 用dp[1][0]也可以，目的是使dp[1][1] == 1
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
             }
         }
-        return a[m - 1];
+        return dp[m - 1][n - 1];
+    }
+
+    public int uniquePaths4(int m, int n) {
+//        可以再转化为一维数组，由最底层一层一层网上递推。
+//        int[] a = new int[m];
+//        for (int i = 0; i < n; i++) {
+//            for (int j = 0; j < m; j++) {
+//                if (i == 0 || j == 0) {
+//                    a[j] = 1;
+//                    continue;
+//                }
+//                a[j] = a[j] + a[j - 1];
+//            }
+//        }
+//        return a[m - 1];
+
+//        简洁版 二刷
+        int[] dp = new int[m];
+        Arrays.fill(dp, 1);
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                dp[j] = dp[j] + dp[j - 1];
+            }
+        }
+        return dp[m - 1];
 
     }
 

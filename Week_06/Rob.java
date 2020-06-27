@@ -20,26 +20,37 @@ package Week_06;
 import java.util.Arrays;
 
 public class Rob {
+//    二刷
+    //    0 / 1 不偷/ 偷
+//    如果最开始想不到一维，定义为二维
+//    dp[i][0] = Math.max(dp[i -1][0], dp[i -1][1])
+//    dp[i][1] = Math.max(dp[i -1][1],dp[i -1][0] + nums[i])
+    public int rob2(int[] nums) {
+        if (nums == null || nums.length == 0) return 0;
+        int[][] dp = new int[nums.length][2];
+        dp[0][1] = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            dp[i][0] = Math.max(dp[i -1][0], dp[i -1][1]);
+            dp[i][1] = Math.max(dp[i -1][0],dp[i -1][0] + nums[i]);
+        }
+        return Math.max(dp[nums.length - 1][1],dp[nums.length - 1][0]);
+    }
+
+    //    一维
+//    当前状态等于 Math.max(前一个状态加上当前不偷， 前两个状态+ 当前偷）
+//     dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
     public int rob(int[] nums) {
-//        分治 （子问题）
-//        dp[i] = dp[i - 2] + nums[i]
-
-
-//        状态数组定义
-//        dp[i]
-
-//        dp方程
-        if(nums == null || nums.length == 0) return 0;
+        if (nums == null || nums.length == 0) return 0;
         if (nums.length == 1) return nums[0];
         if (nums.length == 2) return Math.max(nums[0], nums[1]);
         int[] dp = new int[nums.length];
         dp[0] = nums[0];
-        dp[1] = Math.max(nums[0], nums[1]);
-        dp[2] = dp[0] + nums[2];
-        for (int i = 3; i < nums.length; i++) {
-            dp[i] = Math.max(dp[i - 3], dp[i - 2]) + nums[i];
+        dp[1] = Math.max(nums[1], nums[0]);
+
+        for (int i = 2; i < nums.length; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
         }
-        return Math.max(dp[nums.length - 2], dp[nums.length - 1]);
+        return dp[nums.length - 1];
     }
 
     public static void main(String[] args) {
